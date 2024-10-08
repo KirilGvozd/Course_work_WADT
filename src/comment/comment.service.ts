@@ -15,7 +15,7 @@ export class CommentService {
 
     async findOne() {}
 
-    async create(dto: CreateCommentDto) {}
+    async create(body: CreateCommentDto) {}
 
     async update() {}
 

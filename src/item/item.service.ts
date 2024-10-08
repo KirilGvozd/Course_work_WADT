@@ -15,7 +15,7 @@ export class ItemService {
 
     async findOne() {}
 
-    async create(dto: CreateItemDto) {}
+    async create(body: CreateItemDto) {}
 
     async update() {}
 

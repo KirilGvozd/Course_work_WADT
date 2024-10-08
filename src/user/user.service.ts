@@ -15,7 +15,7 @@ export class UserService {
 
     async findOne() {}
 
-    async create(dto: CreateUserDto) {}
+    async create(body: CreateUserDto) {}
 
     async update() {}
 

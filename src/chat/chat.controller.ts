@@ -1,6 +1,6 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put} from "@nestjs/common";
 import {ChatService} from "./chat.service";
-import {CreateChatDto} from "./dto/createChatDto";
+import {Chat} from "../entities/chat.entity";
 
 @Controller('chat')
 export class ChatController {
@@ -12,22 +12,22 @@ export class ChatController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: number) {
+    findOne(@Param('id', ParseIntPipe) id: number) {
         return this.chatService.findOne();
     }
 
     @Post()
-    create(@Body() dto: CreateChatDto) {
-        return this.chatService.create(dto);
+    create(@Body() body: Chat) {
+        return this.chatService.create(body);
     }
 
-    @Patch(':id')
-    update(@Param('id') id: number) {
+    @Put(':id')
+    update(@Param('id', ParseIntPipe) id: number) {
         return this.chatService.update();
     }
 
     @Delete(':id')
-    delete(@Param('id') id: number) {
+    delete(@Param('id', ParseIntPipe) id: number) {
         return this.chatService.delete();
     }
 }

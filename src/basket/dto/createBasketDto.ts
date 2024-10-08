@@ -1,5 +1,7 @@
-import {IsNumber, IsPositive, IsString, Length} from "class-validator";
+import {IsInt} from "class-validator";
 
 
 export class CreateBasketDto {
+    @IsInt()
+    userId: number;
 }

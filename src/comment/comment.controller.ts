@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UsePipes, ValidationPipe} from "@nestjs/common";
 import {CommentService} from "./comment.service";
 import {CreateCommentDto} from "./dto/createCommentDto";
 
@@ -12,22 +12,23 @@ export class CommentController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: number) {
+    findOne(@Param('id', ParseIntPipe) id: number) {
         return this.commentService.findOne();
     }
 
     @Post()
-    create(@Body() dto: CreateCommentDto) {
-        return this.commentService.create(dto);
+    @UsePipes(new ValidationPipe({ whitelist: true }))
+    create(@Body() body: CreateCommentDto) {
+        return this.commentService.create(body);
     }
 
-    @Patch(':id')
-    update(@Param('id') id: number) {
+    @Put(':id')
+    update(@Param('id', ParseIntPipe) id: number) {
         return this.commentService.update();
     }
 
     @Delete(':id')
-    delete(@Param('id') id: number) {
+    delete(@Param('id', ParseIntPipe) id: number) {
         return this.commentService.delete();
     }
 }

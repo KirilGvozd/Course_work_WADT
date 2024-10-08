@@ -2,7 +2,6 @@ import {Injectable} from "@nestjs/common";
 import {Repository} from "typeorm";
 import {Chat} from "../entities/chat.entity";
 import {InjectRepository} from "@nestjs/typeorm";
-import {CreateBasketItemDto} from "../basket_item/dto/createBasketItemDto";
 
 @Injectable()
 export class ChatService {
@@ -15,7 +14,7 @@ export class ChatService {
 
     async findOne() {}
 
-    async create(dto: CreateBasketItemDto) {}
+    async create(body: Chat) {}
 
     async update() {}
 

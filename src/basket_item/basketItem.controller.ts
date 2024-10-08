@@ -1,6 +1,5 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put} from "@nestjs/common";
 import {BasketItemService} from "./basketItem.service";
-import {Basket} from "../entities/basket.entity";
 import {CreateBasketItemDto} from "./dto/createBasketItemDto";
 
 @Controller('basketItem')
@@ -13,7 +12,7 @@ export class BasketItemController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: number) {
+    findOne(@Param('id', ParseIntPipe) id: number) {
         return this.basketItemService.findOne();
     }
 
@@ -22,13 +21,13 @@ export class BasketItemController {
         return this.basketItemService.create(dto);
     }
 
-    @Patch(':id')
-    update(@Param('id') id: number) {
+    @Put(':id')
+    update(@Param('id', ParseIntPipe) id: number) {
         return this.basketItemService.update();
     }
 
     @Delete(':id')
-    delete(@Param('id') id: number) {
+    delete(@Param('id', ParseIntPipe) id: number) {
         return this.basketItemService.delete();
     }
 }

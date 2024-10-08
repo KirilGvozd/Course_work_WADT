@@ -15,7 +15,7 @@ export class TypeService {
 
     async findOne() {}
 
-    async create(dto: CreateTypeDto) {}
+    async create(body: CreateTypeDto) {}
 
     async update() {}
 

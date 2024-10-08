@@ -1,6 +1,5 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UsePipes, ValidationPipe} from "@nestjs/common";
 import {BasketService} from "./basket.service";
-import {Basket} from "../entities/basket.entity";
 import {CreateBasketDto} from "./dto/createBasketDto";
 
 @Controller('basket')
@@ -13,22 +12,18 @@ export class BasketController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: number) {
-        return this.basketService.findOne();
+    findOne(@Param('id', ParseIntPipe) id: number) {
+        return this.basketService.findOne(id);
     }
 
     @Post()
-    create(@Body() dto: CreateBasketDto) {
-        return this.basketService.create(dto);
-    }
-
-    @Patch(':id')
-    update(@Param('id') id: number) {
-        return this.basketService.update();
+    @UsePipes(new ValidationPipe({ whitelist: true }))
+    create(@Body() body: CreateBasketDto) {
+        return this.basketService.create(body);
     }
 
     @Delete(':id')
-    delete(@Param('id') id: number) {
-        return this.basketService.delete();
+    delete(@Param('id', ParseIntPipe) id: number) {
+        return this.basketService.delete(id);
     }
 }
