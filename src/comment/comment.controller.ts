@@ -13,22 +13,23 @@ export class CommentController {
 
     @Get(':id')
     findOne(@Param('id', ParseIntPipe) id: number) {
-        return this.commentService.findOne();
+        return this.commentService.findOne(id);
     }
 
     @Post()
     @UsePipes(new ValidationPipe({ whitelist: true }))
     create(@Body() body: CreateCommentDto) {
+        console.log(body);
         return this.commentService.create(body);
     }
 
     @Put(':id')
-    update(@Param('id', ParseIntPipe) id: number) {
-        return this.commentService.update();
+    update(@Body() body: CreateCommentDto, @Param('id', ParseIntPipe) id: number) {
+        return this.commentService.update(id, body);
     }
 
     @Delete(':id')
     delete(@Param('id', ParseIntPipe) id: number) {
-        return this.commentService.delete();
+        return this.commentService.delete(id);
     }
 }

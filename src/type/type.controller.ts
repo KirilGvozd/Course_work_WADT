@@ -13,7 +13,7 @@ export class TypeController {
 
     @Get(':id')
     findOne(@Param('id') id: number) {
-        return this.typeService.findOne();
+        return this.typeService.findOne(id);
     }
 
     @Post()
@@ -22,12 +22,12 @@ export class TypeController {
     }
 
     @Put(':id')
-    update(@Param('id') id: number) {
-        return this.typeService.update();
+    update(@Param('id') id: number, @Body() body: CreateTypeDto) {
+        return this.typeService.update(id, body);
     }
 
     @Delete(':id')
     delete(@Param('id') id: number) {
-        return this.typeService.delete();
+        return this.typeService.delete(id);
     }
 }

@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {Injectable, NotFoundException} from "@nestjs/common";
 import {Repository} from "typeorm";
 import {BasketItem} from "../entities/basketItem.entity";
 import {InjectRepository} from "@nestjs/typeorm";
@@ -11,13 +11,31 @@ export class BasketItemService {
         private itemRepo: Repository<BasketItem>
     ) {}
 
-    async findAll() {}
+    async findAll() {
+        return await this.itemRepo.find();
+    }
 
-    async findOne() {}
+    async findOne(id: number) {
+        const result = await this.itemRepo.findOne({
+            where: {
+                id
+            }
+        });
 
-    async create(dto: CreateBasketItemDto) {}
+        if (!result) throw new NotFoundException();
 
-    async update() {}
+        return result;
+    }
 
-    async delete() {}
+    async create(body: CreateBasketItemDto) {
+        return await this.itemRepo.save(body);
+    }
+
+    async delete(id: number) {
+        return await this.itemRepo.delete(id);
+    }
+
+    async update(id: number, body: CreateBasketItemDto) {
+        return await this.itemRepo.update(id, body);
+    }
 }

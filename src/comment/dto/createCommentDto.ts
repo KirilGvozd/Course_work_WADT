@@ -1,4 +1,4 @@
-import {IsDate, IsInt, IsString} from "class-validator";
+import {IsArray, IsDate, IsInt, IsString} from "class-validator";
 
 export class CreateCommentDto {
     @IsInt()
@@ -7,10 +7,10 @@ export class CreateCommentDto {
     @IsInt()
     itemId: number;
 
-    @IsString()
+    @IsArray()
     attachments: string[]
 
-    @IsDate()
+    @IsString()
     date: string
 
     @IsString()

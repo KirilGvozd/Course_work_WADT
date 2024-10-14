@@ -1,7 +1,8 @@
-import {Injectable} from "@nestjs/common";
+import {Injectable, NotFoundException} from "@nestjs/common";
 import {Repository} from "typeorm";
 import {Chat} from "../entities/chat.entity";
 import {InjectRepository} from "@nestjs/typeorm";
+import {CreateChatDto} from "./dto/createChatDto";
 
 @Injectable()
 export class ChatService {
@@ -10,13 +11,31 @@ export class ChatService {
         private chatRepository: Repository<Chat>
     ) {}
 
-    async findAll() {}
+    async findAll() {
+        return await this.chatRepository.find();
+    }
 
-    async findOne() {}
+    async findOne(id: number) {
+        const result = await this.chatRepository.findOne({
+            where: {
+                id
+            }
+        });
 
-    async create(body: Chat) {}
+        if (!result) throw new NotFoundException("Not Found");
 
-    async update() {}
+        return result;
+    }
 
-    async delete() {}
+    async create(body: CreateChatDto) {
+        return await this.chatRepository.save(body);
+    }
+
+    async updateMessage(messageId: number, body: CreateChatDto) {
+        return await this.chatRepository.update(messageId, body);
+    }
+
+    async delete(id: number) {
+        return await this.chatRepository.delete(id);
+    }
 }

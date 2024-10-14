@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {Injectable, NotFoundException} from "@nestjs/common";
 import {Repository} from "typeorm";
 import {Type} from "../entities/type.entity";
 import {InjectRepository} from "@nestjs/typeorm";
@@ -11,13 +11,31 @@ export class TypeService {
         private typeRepository: Repository<Type>
     ) {}
 
-    async findAll() {}
+    async findAll() {
+        return await this.typeRepository.find();
+    }
 
-    async findOne() {}
+    async findOne(id: number) {
+        const result = await this.typeRepository.findOne({
+            where: {
+                id
+            }
+        });
 
-    async create(body: CreateTypeDto) {}
+        if (!result) throw new NotFoundException("Not Found");
 
-    async update() {}
+        return result;
+    }
 
-    async delete() {}
+    async create(body: CreateTypeDto) {
+        return await this.typeRepository.save(body);
+    }
+
+    async update(id: number, body: CreateTypeDto) {
+        return await this.typeRepository.update(id, body);
+    }
+
+    async delete(id: number) {
+        return await this.typeRepository.delete(id);
+    }
 }

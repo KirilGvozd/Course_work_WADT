@@ -3,7 +3,7 @@ import {UserService} from "./user.service";
 import {CreateUserDto} from "./dto/createUserDto";
 
 @Controller('item')
-export class ItemController {
+export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Get()
@@ -13,7 +13,7 @@ export class ItemController {
 
     @Get(':id')
     findOne(@Param('id') id: number) {
-        return this.userService.findOne();
+        return this.userService.findOne(id);
     }
 
     @Post()
@@ -22,12 +22,12 @@ export class ItemController {
     }
 
     @Put(':id')
-    update(@Param('id') id: number) {
-        return this.userService.update();
+    update(@Param('id') id: number, @Body() body: CreateUserDto) {
+        return this.userService.update(id, body);
     }
 
     @Delete(':id')
     delete(@Param('id') id: number) {
-        return this.userService.delete();
+        return this.userService.delete(id);
     }
 }

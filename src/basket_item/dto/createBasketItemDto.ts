@@ -6,4 +6,7 @@ export class CreateBasketItemDto {
 
     @IsInt()
     basketId: number;
+
+    @IsInt()
+    quantity: number;
 }

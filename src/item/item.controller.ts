@@ -1,6 +1,7 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe} from "@nestjs/common";
 import {ItemService} from "./item.service";
 import {CreateItemDto} from "./dto/createItemDto";
+import {Item} from "../entities/item.entity";
 
 @Controller('item')
 export class ItemController {
@@ -13,21 +14,22 @@ export class ItemController {
 
     @Get(':id')
     findOne(@Param('id') id: number) {
-        return this.itemService.findOne();
+        return this.itemService.findOne(id);
     }
 
     @Post()
     create(@Body() body: CreateItemDto) {
+        console.log(body);
         return this.itemService.create(body);
     }
 
     @Put(':id')
-    update(@Param('id') id: number) {
-        return this.itemService.update();
+    update(@Param('id') id: number, @Body() body: CreateItemDto) {
+        return this.itemService.update(id, body);
     }
 
     @Delete(':id')
     delete(@Param('id') id: number) {
-        return this.itemService.delete();
+        return this.itemService.delete(id);
     }
 }

@@ -10,4 +10,7 @@ export class BasketItem {
 
     @Column()
     basketId: number;
+
+    @Column()
+    quantity: number;
 }

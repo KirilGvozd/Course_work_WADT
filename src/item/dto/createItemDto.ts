@@ -1,4 +1,4 @@
-import {IsInt, IsNumber, IsPositive, IsString, Length} from "class-validator";
+import {IsArray, IsInt, IsNumber, IsPositive, IsString, Length} from "class-validator";
 
 
 export class CreateItemDto {
@@ -6,11 +6,10 @@ export class CreateItemDto {
     @IsPositive()
     typeId: number
 
-    @IsNumber()
-    @IsPositive()
+    @IsArray()
     prices: number[]
 
-    @IsString()
+    @IsArray()
     images: string[]
 
     @IsString()
