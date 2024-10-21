@@ -1,4 +1,4 @@
-import {IsArray, IsEmail, IsInt, IsNumber, IsString} from "class-validator";
+import {IsArray, IsEmail, IsNumber, IsString} from "class-validator";
 
 export class CreateUserDto {
     @IsEmail()
@@ -17,6 +17,5 @@ export class CreateUserDto {
     rate: number;
 
     @IsArray()
-    @IsInt()
     favourites: number[];
 }

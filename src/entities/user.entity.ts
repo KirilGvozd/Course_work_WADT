@@ -1,5 +1,5 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn, TableForeignKey} from "typeorm";
-import {Basket} from "./basket.entity";
+import {Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Item} from "./item.entity";
 
 @Entity()
 export class User {

@@ -1,4 +1,4 @@
-import {Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {User} from "./user.entity";
 
 @Entity('basket')
@@ -8,4 +8,8 @@ export class Basket {
 
     @Column()
     userId: number;
+
+    @OneToOne(() => User)
+    @JoinColumn({name: 'userId'})
+    user: User;
 }

@@ -1,4 +1,6 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {User} from "./user.entity";
+import {Type} from "./type.entity";
 
 @Entity()
 export class Item {
@@ -7,6 +9,10 @@ export class Item {
 
     @Column()
     typeId: number
+
+    @ManyToOne(() => Type, (type) => type.id)
+    @JoinColumn({name: 'typeId'})
+    type: Type;
 
     @Column("int", { array: true} )
     prices: number[]

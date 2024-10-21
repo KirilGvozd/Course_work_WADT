@@ -10,6 +10,6 @@ export class CreateChatDto {
     @IsString()
     messageText: string;
 
-    @IsDate()
-    messageDate: Date;
+    @IsString()
+    messageDate: string;
 }

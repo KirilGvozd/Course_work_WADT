@@ -3,7 +3,6 @@ import {IsArray, IsInt, IsNumber, IsPositive, IsString, Length} from "class-vali
 
 export class CreateItemDto {
     @IsInt()
-    @IsPositive()
     typeId: number
 
     @IsArray()
