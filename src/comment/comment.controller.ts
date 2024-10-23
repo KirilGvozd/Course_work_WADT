@@ -1,14 +1,27 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UsePipes, ValidationPipe} from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    ParseIntPipe,
+    Post,
+    Put,
+    Query,
+    UsePipes,
+    ValidationPipe
+} from "@nestjs/common";
 import {CommentService} from "./comment.service";
 import {CreateCommentDto} from "./dto/createCommentDto";
+import {PaginationDto} from "../pagination.dto";
 
 @Controller('comment')
 export class CommentController {
     constructor(private readonly commentService: CommentService) {}
 
     @Get()
-    findAll() {
-        return this.commentService.findAll();
+    findAll(@Query() paginationDto: PaginationDto) {
+        return this.commentService.findAll(paginationDto);
     }
 
     @Get(':id')
@@ -19,7 +32,6 @@ export class CommentController {
     @Post()
     @UsePipes(new ValidationPipe({ whitelist: true }))
     create(@Body() body: CreateCommentDto) {
-        console.log(body);
         return this.commentService.create(body);
     }
 

@@ -10,7 +10,6 @@ export class CreateCommentDto {
     @IsArray()
     attachments: string[]
 
-    @IsString()
     date: string
 
     @IsString()

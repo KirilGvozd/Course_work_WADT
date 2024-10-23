@@ -3,6 +3,8 @@ import {Repository} from "typeorm";
 import {Type} from "../entities/type.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {CreateTypeDto} from "./dto/createTypeDto";
+import {PaginationDto} from "../pagination.dto";
+import {DEFAULT_PAGE_SIZE} from "../utils/constants";
 
 @Injectable()
 export class TypeService {
@@ -11,8 +13,11 @@ export class TypeService {
         private typeRepository: Repository<Type>
     ) {}
 
-    async findAll() {
-        return await this.typeRepository.find();
+    async findAll(paginationDto: PaginationDto) {
+        return await this.typeRepository.find({
+            skip: paginationDto.skip,
+            take: paginationDto.limit ?? DEFAULT_PAGE_SIZE,
+        });
     }
 
     async findOne(id: number) {

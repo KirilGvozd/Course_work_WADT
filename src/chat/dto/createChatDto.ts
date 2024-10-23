@@ -1,4 +1,4 @@
-import {IsDate, IsInt, IsString} from "class-validator";
+import {IsInt, IsISO8601, IsString} from "class-validator";
 
 export class CreateChatDto {
     @IsInt()
@@ -10,6 +10,5 @@ export class CreateChatDto {
     @IsString()
     messageText: string;
 
-    @IsString()
     messageDate: string;
 }

@@ -1,5 +1,5 @@
-import {Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import {Item} from "./item.entity";
+import {BeforeInsert, Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import * as bcrypt from "bcrypt";
 
 @Entity()
 export class User {
@@ -23,4 +23,9 @@ export class User {
 
     @Column("int", { array: true} )
     favourites: number[]
+
+    @BeforeInsert()
+    async hashPassword() {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
 }

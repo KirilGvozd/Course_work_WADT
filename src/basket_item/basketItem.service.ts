@@ -3,6 +3,8 @@ import {Repository} from "typeorm";
 import {BasketItem} from "../entities/basketItem.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {CreateBasketItemDto} from "./dto/createBasketItemDto";
+import {PaginationDto} from "../pagination.dto";
+import {DEFAULT_PAGE_SIZE} from "../utils/constants";
 
 @Injectable()
 export class BasketItemService {
@@ -11,8 +13,11 @@ export class BasketItemService {
         private itemRepo: Repository<BasketItem>
     ) {}
 
-    async findAll() {
-        return await this.itemRepo.find();
+    async findAll(paginationDto: PaginationDto) {
+        return await this.itemRepo.find({
+            skip: paginationDto.skip,
+            take: paginationDto.limit ?? DEFAULT_PAGE_SIZE,
+        });
     }
 
     async findOne(id: number) {

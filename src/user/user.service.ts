@@ -3,6 +3,8 @@ import {Repository} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 import {User} from "../entities/user.entity";
 import {CreateUserDto} from "./dto/createUserDto";
+import {PaginationDto} from "../pagination.dto";
+import {DEFAULT_PAGE_SIZE} from "../utils/constants";
 
 @Injectable()
 export class UserService {
@@ -11,8 +13,19 @@ export class UserService {
         private userRepository: Repository<User>
     ) {}
 
-    async findAll() {
-        return await this.userRepository.find();
+    async findAll(paginationDto: PaginationDto) {
+        return await this.userRepository.find({
+            skip: paginationDto.skip,
+            take: paginationDto.limit ?? DEFAULT_PAGE_SIZE,
+        });
+    }
+
+    async findByEmail(email: string) {
+        return await this.userRepository.findOne({
+            where: {
+                email,
+            }
+        })
     }
 
     async findOne(id: number) {
@@ -28,7 +41,8 @@ export class UserService {
     }
 
     async create(body: CreateUserDto) {
-        return await this.userRepository.save(body);
+        const user = this.userRepository.create(body);
+        return await this.userRepository.save(user);
     }
 
     async update(id: number, body: CreateUserDto) {

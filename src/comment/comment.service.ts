@@ -3,6 +3,8 @@ import {Repository} from "typeorm";
 import {Comment} from "../entities/comment.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {CreateCommentDto} from "./dto/createCommentDto";
+import {PaginationDto} from "../pagination.dto";
+import {DEFAULT_PAGE_SIZE} from "../utils/constants";
 
 @Injectable()
 export class CommentService {
@@ -11,8 +13,11 @@ export class CommentService {
         private commentRepository: Repository<Comment>
     ) {}
 
-    async findAll() {
-        return await this.commentRepository.find();
+    async findAll(paginationDto: PaginationDto) {
+        return await this.commentRepository.find({
+            skip: paginationDto.skip,
+            take: paginationDto.limit ?? DEFAULT_PAGE_SIZE,
+        });
     }
 
     async findOne(id: number) {
@@ -26,6 +31,8 @@ export class CommentService {
     }
 
     async create(body: CreateCommentDto) {
+
+        body.date = new Date().toISOString();
         return await this.commentRepository.save(body);
     }
 

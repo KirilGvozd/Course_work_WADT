@@ -1,15 +1,16 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, UsePipes, ValidationPipe} from "@nestjs/common";
 import {ItemService} from "./item.service";
 import {CreateItemDto} from "./dto/createItemDto";
 import {Item} from "../entities/item.entity";
+import {PaginationDto} from "../pagination.dto";
 
 @Controller('item')
 export class ItemController {
     constructor(private readonly itemService: ItemService) {}
 
     @Get()
-    findAll() {
-        return this.itemService.findAll();
+    findAll(@Query() paginationDto: PaginationDto) {
+        return this.itemService.findAll(paginationDto);
     }
 
     @Get(':id')

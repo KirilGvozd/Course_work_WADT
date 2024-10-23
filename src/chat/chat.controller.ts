@@ -1,14 +1,15 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from "@nestjs/common";
 import {ChatService} from "./chat.service";
 import {CreateChatDto} from "./dto/createChatDto";
+import {PaginationDto} from "../pagination.dto";
 
 @Controller('chat')
 export class ChatController {
     constructor(private readonly chatService: ChatService) {}
 
     @Get()
-    findAll() {
-        return this.chatService.findAll();
+    findAll(@Query() paginationDto: PaginationDto) {
+        return this.chatService.findAll(paginationDto);
     }
 
     @Get(':id')

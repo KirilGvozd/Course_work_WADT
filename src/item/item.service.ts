@@ -3,6 +3,8 @@ import {Repository} from "typeorm";
 import {Item} from "../entities/item.entity";
 import {InjectRepository} from "@nestjs/typeorm";
 import {CreateItemDto} from "./dto/createItemDto";
+import {PaginationDto} from "../pagination.dto";
+import {DEFAULT_PAGE_SIZE} from "../utils/constants";
 
 @Injectable()
 export class ItemService {
@@ -11,8 +13,11 @@ export class ItemService {
         private itemRepo: Repository<Item>
     ) {}
 
-    async findAll() {
-        return await this.itemRepo.find();
+    async findAll(paginationDto: PaginationDto) {
+        return await this.itemRepo.find({
+            skip: paginationDto.skip,
+            take: paginationDto.limit ?? DEFAULT_PAGE_SIZE,
+        });
     }
 
     async findOne(id: number) {

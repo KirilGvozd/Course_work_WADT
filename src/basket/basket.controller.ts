@@ -1,14 +1,27 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UsePipes, ValidationPipe} from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    ParseIntPipe,
+    Post,
+    Put,
+    Query,
+    UsePipes,
+    ValidationPipe
+} from "@nestjs/common";
 import {BasketService} from "./basket.service";
 import {CreateBasketDto} from "./dto/createBasketDto";
+import {PaginationDto} from "../pagination.dto";
 
 @Controller('basket')
 export class BasketController {
     constructor(private readonly basketService: BasketService) {}
 
     @Get()
-    findAll() {
-        return this.basketService.findAll();
+    findAll(@Query() paginationDto: PaginationDto) {
+        return this.basketService.findAll(paginationDto);
     }
 
     @Get(':id')
