@@ -8,5 +8,8 @@ export class CreateBasketItemDto {
     basketId: number;
 
     @IsInt()
+    userId: number;
+
+    @IsInt()
     quantity: number;
 }

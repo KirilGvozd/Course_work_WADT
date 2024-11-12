@@ -40,11 +40,6 @@ export class UserService {
         return result;
     }
 
-    async create(body: CreateUserDto) {
-        const user = this.userRepository.create(body);
-        return await this.userRepository.save(user);
-    }
-
     async update(id: number, body: CreateUserDto) {
         return await this.userRepository.update(id, body);
     }

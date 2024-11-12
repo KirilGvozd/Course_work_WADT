@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Put, Query} from "@nestjs/common";
 import {UserService} from "./user.service";
 import {CreateUserDto} from "./dto/createUserDto";
 import {PaginationDto} from "../pagination.dto";
@@ -15,11 +15,6 @@ export class UserController {
     @Get(':id')
     findOne(@Param('id') id: number) {
         return this.userService.findOne(id);
-    }
-
-    @Post()
-    create(@Body() body: CreateUserDto) {
-        return this.userService.create(body);
     }
 
     @Put(':id')

@@ -4,25 +4,28 @@ import * as bcrypt from "bcrypt";
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
     @Column()
-    email: string
+    email: string;
 
     @Column()
-    role: string
+    role: string;
 
     @Column()
-    password: string
+    password: string;
 
     @Column()
-    name: string
+    name: string;
 
     @Column()
-    rate: number
+    rate: number;
 
     @Column("int", { array: true} )
-    favourites: number[]
+    favourites: number[];
+
+    @Column({ nullable: true })
+    refreshToken: string;
 
     @BeforeInsert()
     async hashPassword() {

@@ -1,6 +1,6 @@
 import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Item} from "./item.entity";
-import {Basket} from "./basket.entity";
+import {User} from "./user.entity";
 
 @Entity('basketItem')
 export class BasketItem {
@@ -14,13 +14,16 @@ export class BasketItem {
     basketId: number;
 
     @Column()
+    userId: number;
+
+    @Column()
     quantity: number
 
     @ManyToOne(() => Item, (item) => item.id)
     @JoinColumn({name: 'itemId'})
     item: Item;
 
-    @ManyToOne(() => Basket, (basket) => basket.id)
-    @JoinColumn({name: 'basketId'})
-    basket: Basket;
+    @ManyToOne(() => User, (user) => user.id)
+    @JoinColumn({name: 'userId'})
+    user: User;
 }

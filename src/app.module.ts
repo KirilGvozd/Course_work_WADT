@@ -2,7 +2,6 @@ import {MiddlewareConsumer, Module, NestModule} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {BasketModule} from "./basket/basket.module";
 import {BasketItemModule} from "./basket_item/basketItem.module";
 import {ChatModule} from "./chat/chat.module";
 import {CommentModule} from "./comment/comment.module";
@@ -13,12 +12,12 @@ import * as bodyParser from 'body-parser';
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {Item} from "./entities/item.entity";
 import {User} from "./entities/user.entity";
-import {Basket} from "./entities/basket.entity";
 import {BasketItem} from "./entities/basketItem.entity";
 import {Chat} from "./entities/chat.entity";
 import {Comment} from "./entities/comment.entity";
 import {Type} from "./entities/type.entity";
 import {AuthModule} from "./auth/auth.module";
+
 
 @Module({
   imports: [
@@ -26,7 +25,6 @@ import {AuthModule} from "./auth/auth.module";
       isGlobal: true,
     }),
     AuthModule,
-    BasketModule,
     BasketItemModule,
     ChatModule,
     CommentModule,
@@ -37,12 +35,12 @@ import {AuthModule} from "./auth/auth.module";
         inject: [ConfigService],
         useFactory: (configService: ConfigService) => ({
           type: 'postgres',
-          host: 'localhost',
-          port: 5432,
-          username: 'postgres',
-          password: 'KirillGvozd2003',
-          database: 'flea_market_app',
-          entities: [Item, User, Basket, BasketItem, Chat, Comment, Type],
+          host: configService.get<string>("DATABASE_HOST"),
+          port: configService.get<number>("DATABASE_PORT"),
+          username: configService.get<string>("DATABASE_USERNAME"),
+          password: configService.get<string>("DATABASE_PASSWORD"),
+          database: configService.get<string>("DATABASE_NAME"),
+          entities: [Item, User, BasketItem, Chat, Comment, Type],
           synchronize: true,
         })
       })
