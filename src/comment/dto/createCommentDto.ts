@@ -1,4 +1,4 @@
-import {IsArray, IsDate, IsInt, IsString} from "class-validator";
+import {IsArray, IsInt, IsString} from "class-validator";
 
 export class CreateCommentDto {
     @IsInt()

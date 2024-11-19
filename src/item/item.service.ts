@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException} from "@nestjs/common";
+import {Injectable, NotFoundException, UnauthorizedException} from "@nestjs/common";
 import {Repository} from "typeorm";
 import {Item} from "../entities/item.entity";
 import {InjectRepository} from "@nestjs/typeorm";
@@ -32,11 +32,21 @@ export class ItemService {
         return result;
     }
 
-    async create(body: CreateItemDto) {
+    async create(body: CreateItemDto, userRole: string) {
+        if (userRole === "buyer") {
+            throw new UnauthorizedException("You dont have permission to create an item!");
+        }
+
         return await this.itemRepo.save(body);
     }
 
-    async update(id: number, body: CreateItemDto){
+    async update(id: number, body: CreateItemDto, userId: number){
+        const item = await this.itemRepo.findOne({
+            where: {
+
+            }
+        });
+
         return await this.itemRepo.update(id, body);
     }
 

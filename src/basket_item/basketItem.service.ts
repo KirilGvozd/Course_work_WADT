@@ -33,14 +33,14 @@ export class BasketItemService {
     }
 
     async create(body: CreateBasketItemDto) {
-        return await this.itemRepo.save(body);
+        await this.itemRepo.save(body);
     }
 
     async delete(id: number) {
-        return await this.itemRepo.delete(id);
+        await this.itemRepo.delete(id);
     }
 
     async update(id: number, body: CreateBasketItemDto) {
-        return await this.itemRepo.update(id, body);
+        await this.itemRepo.update(id, body);
     }
 }

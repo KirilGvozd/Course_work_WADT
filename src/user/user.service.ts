@@ -5,6 +5,7 @@ import {User} from "../entities/user.entity";
 import {CreateUserDto} from "./dto/createUserDto";
 import {PaginationDto} from "../pagination.dto";
 import {DEFAULT_PAGE_SIZE} from "../utils/constants";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UserService {
@@ -12,6 +13,11 @@ export class UserService {
         @InjectRepository(User)
         private userRepository: Repository<User>
     ) {}
+
+    async create(createUserDto: CreateUserDto) {
+        createUserDto.password = await bcrypt.hash(createUserDto.password, 12);
+        await this.userRepository.save(createUserDto);
+    }
 
     async findAll(paginationDto: PaginationDto) {
         return await this.userRepository.find({

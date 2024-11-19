@@ -7,7 +7,7 @@ import {
     ParseIntPipe,
     Post,
     Put,
-    Query,
+    Query, Req,
     UsePipes,
     ValidationPipe
 } from "@nestjs/common";
@@ -20,28 +20,27 @@ export class CommentController {
     constructor(private readonly commentService: CommentService) {}
 
     @Get()
-    findAll(@Query() paginationDto: PaginationDto) {
-        return this.commentService.findAll(paginationDto);
-    }
-
-    @Get(':id')
-    findOne(@Param('id', ParseIntPipe) id: number) {
-        return this.commentService.findOne(id);
+    findAll(@Query() paginationDto: PaginationDto, @Req() request) {
+        const itemId = request.item.id;
+        return this.commentService.findAll(paginationDto, itemId);
     }
 
     @Post()
     @UsePipes(new ValidationPipe({ whitelist: true }))
-    create(@Body() body: CreateCommentDto) {
-        return this.commentService.create(body);
+    create(@Body() body: CreateCommentDto, @Req() request) {
+        const userRole = request.user.role;
+        return this.commentService.create(body, userRole);
     }
 
     @Put(':id')
-    update(@Body() body: CreateCommentDto, @Param('id', ParseIntPipe) id: number) {
-        return this.commentService.update(id, body);
+    update(@Body() body: CreateCommentDto, @Param('id', ParseIntPipe) id: number, @Req() request) {
+        const userId = request.user.id;
+        return this.commentService.update(id, body, userId);
     }
 
     @Delete(':id')
-    delete(@Param('id', ParseIntPipe) id: number) {
-        return this.commentService.delete(id);
+    delete(@Param('id', ParseIntPipe) id: number, @Req() request) {
+        const userId = request.user.id;
+        return this.commentService.delete(id, userId);
     }
 }

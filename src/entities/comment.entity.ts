@@ -15,11 +15,11 @@ export class Comment {
     user: User;
 
     @Column()
-    itemId: number;
+    sellerId: number;
 
     @ManyToOne(() => Item, (item) => item.id)
-    @JoinColumn({name: 'itemId'})
-    item: Item;
+    @JoinColumn({name: 'sellerId'})
+    seller: User;
 
     @Column("text", { array: true} )
     attachments: string[];

@@ -8,27 +8,27 @@ export class BasketItemController {
     constructor(private readonly basketItemService: BasketItemService) {}
 
     @Get()
-    findAll(@Query() paginationDto: PaginationDto) {
-        return this.basketItemService.findAll(paginationDto);
+    async findAll(@Query() paginationDto: PaginationDto) {
+        return await this.basketItemService.findAll(paginationDto);
     }
 
     @Get(':id')
-    findOne(@Param('id', ParseIntPipe) id: number) {
+    async findOne(@Param('id', ParseIntPipe) id: number) {
         return this.basketItemService.findOne(id);
     }
 
     @Post()
-    create(@Body() body: CreateBasketItemDto) {
-        return this.basketItemService.create(body);
+    async create(@Body() body: CreateBasketItemDto) {
+        await this.basketItemService.create(body);
     }
 
     @Put(':id')
-    update(@Body() body: CreateBasketItemDto, @Param('id', ParseIntPipe) id: number) {
-        return this.basketItemService.update(id, body);
+    async update(@Body() body: CreateBasketItemDto, @Param('id', ParseIntPipe) id: number) {
+        await this.basketItemService.update(id, body);
     }
 
     @Delete(':id')
-    delete(@Param('id', ParseIntPipe) id: number) {
-        return this.basketItemService.delete(id);
+    async delete(@Param('id', ParseIntPipe) id: number) {
+        await this.basketItemService.delete(id);
     }
 }
