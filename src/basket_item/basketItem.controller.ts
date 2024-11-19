@@ -1,8 +1,10 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards} from "@nestjs/common";
 import {BasketItemService} from "./basketItem.service";
 import {CreateBasketItemDto} from "./dto/createBasketItemDto";
 import {PaginationDto} from "../pagination.dto";
+import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 
+@UseGuards(JwtAuthGuard)
 @Controller('basketItem')
 export class BasketItemController {
     constructor(private readonly basketItemService: BasketItemService) {}

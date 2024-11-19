@@ -1,7 +1,8 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards} from "@nestjs/common";
 import {UserService} from "./user.service";
 import {CreateUserDto} from "./dto/createUserDto";
 import {PaginationDto} from "../pagination.dto";
+import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 
 @Controller('user')
 export class UserController {
@@ -12,23 +13,17 @@ export class UserController {
         await this.userService.create(createUserDto);
     }
 
-    @Get()
-    findAll(@Query() paginationDto: PaginationDto) {
-        return this.userService.findAll(paginationDto);
-    }
-
     @Get(':id')
-    findOne(@Param('id') id: number) {
+    @UseGuards(JwtAuthGuard)
+    findOne(@Req() request) {
+        const id = request.user.id;
         return this.userService.findOne(id);
     }
 
-    @Put(':id')
-    update(@Param('id') id: number, @Body() body: CreateUserDto) {
-        return this.userService.update(id, body);
-    }
-
     @Delete(':id')
-    delete(@Param('id') id: number) {
+    @UseGuards(JwtAuthGuard)
+    delete(@Req() request) {
+        const id = request.user.id;
         return this.userService.delete(id);
     }
 }

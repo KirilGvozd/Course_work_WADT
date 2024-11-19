@@ -14,8 +14,8 @@ export class CreateUserDto {
     name: string;
 
     @IsNumber()
-    rate: number;
+    rate: number = 0;
 
     @IsArray()
-    favourites: number[];
+    favourites: number[] = [];
 }

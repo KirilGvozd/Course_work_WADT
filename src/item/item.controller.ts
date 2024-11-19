@@ -1,8 +1,22 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UsePipes, ValidationPipe} from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+    Query,
+    Req,
+    UseGuards,
+    UsePipes,
+    ValidationPipe
+} from "@nestjs/common";
 import {ItemService} from "./item.service";
 import {CreateItemDto} from "./dto/createItemDto";
 import {Item} from "../entities/item.entity";
 import {PaginationDto} from "../pagination.dto";
+import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 
 @Controller('item')
 export class ItemController {
@@ -19,19 +33,23 @@ export class ItemController {
     }
 
     @Post()
+    @UseGuards(JwtAuthGuard)
     create(@Body() body: CreateItemDto, @Req() request) {
         const userRole = request.user.role;
         return this.itemService.create(body, userRole);
     }
 
     @Put(':id')
+    @UseGuards(JwtAuthGuard)
     update(@Param('id') id: number, @Body() body: CreateItemDto, @Req() request) {
         const userId = request.user.id;
         return this.itemService.update(id, body, userId);
     }
 
     @Delete(':id')
-    delete(@Param('id') id: number) {
-        return this.itemService.delete(id);
+    @UseGuards(JwtAuthGuard)
+    delete(@Param('id') id: number, @Req() request) {
+        const userId = request.user.id;
+        return this.itemService.delete(id, userId);
     }
 }

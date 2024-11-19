@@ -33,14 +33,14 @@ export class TypeService {
     }
 
     async create(body: CreateTypeDto) {
-        return await this.typeRepository.save(body);
+        await this.typeRepository.save(body);
     }
 
     async update(id: number, body: CreateTypeDto) {
-        return await this.typeRepository.update(id, body);
+        await this.typeRepository.update(id, body);
     }
 
     async delete(id: number) {
-        return await this.typeRepository.delete(id);
+        await this.typeRepository.delete(id);
     }
 }

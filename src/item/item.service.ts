@@ -27,7 +27,9 @@ export class ItemService {
             }
         });
 
-        if (!result) throw new NotFoundException("Not Found");
+        if (!result) {
+            throw new NotFoundException("Not Found");
+        }
 
         return result;
     }
@@ -43,14 +45,28 @@ export class ItemService {
     async update(id: number, body: CreateItemDto, userId: number){
         const item = await this.itemRepo.findOne({
             where: {
-
+                userId: userId,
             }
         });
+
+        if (!item) {
+            throw new UnauthorizedException("You don't have the permission to update this item!");
+        }
 
         return await this.itemRepo.update(id, body);
     }
 
-    async delete(id: number){
+    async delete(id: number, userId: number){
+        const item = await this.itemRepo.findOne({
+            where: {
+                userId: userId,
+            }
+        });
+
+        if (!item) {
+            throw new UnauthorizedException("You don't have the permission to delete this item!");
+        }
+
         return await this.itemRepo.delete(id);
     }
 }

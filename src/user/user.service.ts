@@ -46,10 +46,6 @@ export class UserService {
         return result;
     }
 
-    async update(id: number, body: CreateUserDto) {
-        return await this.userRepository.update(id, body);
-    }
-
     async delete(id: number) {
         return await this.userRepository.delete(id);
     }
