@@ -1,25 +1,25 @@
 import {IsArray, IsInt, IsNumber, IsPositive, IsString, Length} from "class-validator";
 
-
 export class CreateItemDto {
     @IsInt()
-    typeId: number
+    typeId: number;
+
+    userId: number;
 
     @IsArray()
-    prices: number[]
+    prices: number[] = [];
 
     @IsArray()
-    images: string[]
+    images: string[] = [];
 
     @IsString()
     @Length(1, 40, { message: 'Length error' })
-    name: string
+    name: string;
 
     @IsString()
-    description: string
+    description: string;
 
     @IsNumber()
     @IsPositive()
-    price: number
-
+    price: number;
 }

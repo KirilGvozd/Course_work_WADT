@@ -5,6 +5,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {CreateItemDto} from "./dto/createItemDto";
 import {PaginationDto} from "../pagination.dto";
 import {DEFAULT_PAGE_SIZE} from "../utils/constants";
+import {UpdateItemDto} from "./dto/updateItem.dto";
 
 @Injectable()
 export class ItemService {
@@ -34,15 +35,15 @@ export class ItemService {
         return result;
     }
 
-    async create(body: CreateItemDto, userRole: string) {
-        if (userRole === "buyer") {
+    async create(body: CreateItemDto, user: {userId: number, role: string}) {
+        if (user.role === "buyer") {
             throw new UnauthorizedException("You dont have permission to create an item!");
         }
 
         return await this.itemRepo.save(body);
     }
 
-    async update(id: number, body: CreateItemDto, userId: number){
+    async update(id: number, body: UpdateItemDto, userId: number){
         const item = await this.itemRepo.findOne({
             where: {
                 userId: userId,
@@ -52,6 +53,12 @@ export class ItemService {
         if (!item) {
             throw new UnauthorizedException("You don't have the permission to update this item!");
         }
+
+        if (body.price !== item.price) {
+            item.prices.push(item.price);
+        }
+
+        body.prices = item.prices;
 
         return await this.itemRepo.update(id, body);
     }
