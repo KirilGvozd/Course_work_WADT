@@ -16,7 +16,7 @@ export class Chat {
     messageText: string;
 
     @Column()
-    messageDate: string;
+    messageDate: string = new Date().toISOString();
 
     @ManyToOne(() => User, (user) => user.id)
     @JoinColumn({name: 'senderId'})

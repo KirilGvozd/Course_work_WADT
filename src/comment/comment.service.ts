@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException, UnauthorizedException} from "@nestjs/common";
+import {Injectable, UnauthorizedException} from "@nestjs/common";
 import {Repository} from "typeorm";
 import {Comment} from "../entities/comment.entity";
 import {InjectRepository} from "@nestjs/typeorm";
@@ -14,10 +14,10 @@ export class CommentService {
         private commentRepository: Repository<Comment>
     ) {}
 
-    async findAll(paginationDto: PaginationDto, itemId: number) {
+    async findAll(paginationDto: PaginationDto, sellerId: number) {
         return await this.commentRepository.find({
             where: {
-                sellerId: itemId,
+                sellerId: sellerId,
             },
             skip: paginationDto.skip,
             take: paginationDto.limit ?? DEFAULT_PAGE_SIZE,

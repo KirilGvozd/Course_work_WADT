@@ -9,5 +9,6 @@ import {JwtStrategy} from "../auth/jwt.strategy";
     imports: [TypeOrmModule.forFeature([Chat])],
     controllers: [ChatController],
     providers: [ChatService, JwtStrategy],
+    exports: [ChatService],
 })
 export class ChatModule {}

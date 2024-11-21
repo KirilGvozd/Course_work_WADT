@@ -15,6 +15,7 @@ export class UserService {
     ) {}
 
     async create(createUserDto: CreateUserDto) {
+
         createUserDto.password = await bcrypt.hash(createUserDto.password, 12);
         await this.userRepository.save(createUserDto);
     }

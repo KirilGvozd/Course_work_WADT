@@ -2,7 +2,6 @@ import {
     ConflictException,
     Injectable,
     NotFoundException,
-    UnauthorizedException
 } from "@nestjs/common";
 import {Repository} from "typeorm";
 import {Chat} from "../entities/chat.entity";
@@ -35,16 +34,16 @@ export class ChatService {
         return chats;
     }
 
-    async findOne(id: number, userId: number) {
-        const result = await this.chatRepository.findOne({
+    async findChat(senderId: number, receiverId: number) {
+        const result = await this.chatRepository.find({
             where: {
-                id,
-                senderId: userId,
+                senderId: senderId,
+                receiverId: receiverId,
             }
         });
 
         if (!result) {
-            throw new NotFoundException("Not Found");
+            throw new NotFoundException("There's no chat with this user!");
         }
 
         return result;
@@ -55,7 +54,6 @@ export class ChatService {
             throw new ConflictException("Sender and receiver ID's are the same");
         }
 
-        body.messageDate = new Date().toISOString();
         await this.chatRepository.save(body);
     }
 

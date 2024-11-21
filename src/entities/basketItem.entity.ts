@@ -11,13 +11,7 @@ export class BasketItem {
     itemId: number;
 
     @Column()
-    basketId: number;
-
-    @Column()
     userId: number;
-
-    @Column()
-    quantity: number
 
     @ManyToOne(() => Item, (item) => item.id)
     @JoinColumn({name: 'itemId'})

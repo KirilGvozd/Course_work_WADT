@@ -25,8 +25,11 @@ export class Comment {
     attachments: string[];
 
     @Column()
-    date: string;
+    date: string = new Date().toISOString();
 
     @Column()
     text: string;
+
+    @Column()
+    rate: number;
 }

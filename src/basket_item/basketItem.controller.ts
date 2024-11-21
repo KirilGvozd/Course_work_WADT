@@ -1,8 +1,9 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Query, Req, UseGuards} from "@nestjs/common";
 import {BasketItemService} from "./basketItem.service";
 import {CreateBasketItemDto} from "./dto/createBasketItemDto";
 import {PaginationDto} from "../pagination.dto";
 import {JwtAuthGuard} from "../auth/jwt-auth.guard";
+import {ApiResponse} from "@nestjs/swagger";
 
 @UseGuards(JwtAuthGuard)
 @Controller('basketItem')
@@ -10,27 +11,26 @@ export class BasketItemController {
     constructor(private readonly basketItemService: BasketItemService) {}
 
     @Get()
-    async findAll(@Query() paginationDto: PaginationDto) {
-        return await this.basketItemService.findAll(paginationDto);
-    }
-
-    @Get(':id')
-    async findOne(@Param('id', ParseIntPipe) id: number) {
-        return this.basketItemService.findOne(id);
+    @ApiResponse({ status: 200, description: 'Your items from cart has been found'})
+    @ApiResponse({ status: 401, description: "You don't have access to this cart."})
+    async findAll(@Query() paginationDto: PaginationDto, @Req() request) {
+        const userId: number = request.user.userId;
+        return await this.basketItemService.findAll(paginationDto, userId);
     }
 
     @Post()
-    async create(@Body() body: CreateBasketItemDto) {
+    @ApiResponse({ status: 201, description: 'Item has been successfully added to your cart' })
+    @ApiResponse({ status: 401, description: "You don't have access to add items to cart."})
+    async create(@Body() body: CreateBasketItemDto, @Req() request) {
+        body.userId = request.user.userId;
         await this.basketItemService.create(body);
     }
 
-    @Put(':id')
-    async update(@Body() body: CreateBasketItemDto, @Param('id', ParseIntPipe) id: number) {
-        await this.basketItemService.update(id, body);
-    }
-
+    @ApiResponse({ status: 201, description: 'Item has been successfully removed from your cart' })
+    @ApiResponse({ status: 401, description: "You don't have access to this card!"})
     @Delete(':id')
-    async delete(@Param('id', ParseIntPipe) id: number) {
-        await this.basketItemService.delete(id);
+    async delete(@Param('id', ParseIntPipe) id: number, @Req() request) {
+        const userId: number = request.user.userId;
+        await this.basketItemService.delete(id, userId);
     }
 }

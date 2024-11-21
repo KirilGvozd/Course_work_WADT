@@ -17,6 +17,7 @@ import {Request, Response} from "express";
 import {AuthGuard} from "@nestjs/passport";
 import {UserService} from "../user/user.service";
 import {AuthDto} from "./dto/auth.dto";
+import {ApiExcludeEndpoint, ApiResponse} from "@nestjs/swagger";
 
 @Controller('auth')
 export class AuthController {
@@ -27,10 +28,18 @@ export class AuthController {
   ) {}
 
   @Post('register')
+  @ApiResponse({ status: 201, description: 'The user has been successfully registered.'})
+  @ApiResponse({ status: 400, description: 'User with this email already exists!'})
   async register(@Body() body: CreateUserDto) {
+    const user = await this.userService.findByEmail(body.email);
+    if (user) {
+      throw new BadRequestException("User with this email already exists!");
+    }
     await this.userService.create(body);
   }
 
+  @ApiResponse({ status: 201, description: 'The user has been successfully registered.'})
+  @ApiResponse({ status: 400, description: 'Invalid credentials!'})
   @Post('login')
   async login(@Body() body: AuthDto, @Res({ passthrough: true }) res: Response) {
     const user = await this.userService.findByEmail(body.email);
@@ -46,10 +55,16 @@ export class AuthController {
     res.cookie("jwt", tokens.accessToken, { httpOnly: true });
     res.cookie("refreshToken", tokens.refreshToken, { httpOnly: true, path: '/auth/refresh' });
 
-    return { message: "Login successful" };
+    return {
+      message: "Login successful",
+      accessToken: tokens.accessToken,
+    };
   }
 
+
   @Post('refresh')
+  @ApiResponse({ status: 201, description: 'Token refreshed successfully.'})
+  @ApiResponse({ status: 401, description: 'Invalid refresh token.'})
   async refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const refreshToken = req.cookies['refreshToken'];
 
@@ -78,12 +93,19 @@ export class AuthController {
   }
 
   @Post('logout')
-  async logout(@Res({passthrough: true}) res: Response) {
+  @ApiResponse({ status: 401, description: 'Unauthorized.'})
+  @ApiResponse({ status: 200, description: 'The user has been successfully logged out.'})
+  async logout(@Res({passthrough: true}) res: Response, @Req() request) {
+    if (!request.user) {
+      throw new UnauthorizedException("You're not logged in!");
+    }
     res.clearCookie("jwt");
     return {message: "Success"};
   }
 
   @Get('user')
+  @ApiResponse({ status: 401, description: 'Unauthorized.'})
+  @ApiResponse({ status: 200, description: 'User has been successfully found.'})
   async user(@Req() req: Request) {
 
     try {
@@ -102,11 +124,13 @@ export class AuthController {
   }
 
   @Get('google')
+  @ApiExcludeEndpoint()
   @UseGuards(AuthGuard('google'))
   async googleAuth() {
   }
 
   @Get('google/callback')
+  @ApiExcludeEndpoint()
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const user = req.user as any;

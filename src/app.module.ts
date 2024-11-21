@@ -17,6 +17,7 @@ import {Chat} from "./entities/chat.entity";
 import {Comment} from "./entities/comment.entity";
 import {Type} from "./entities/type.entity";
 import {AuthModule} from "./auth/auth.module";
+import { ChatGatewayGateway } from './chat_gateway/chat_gateway.gateway';
 
 
 @Module({
@@ -46,7 +47,7 @@ import {AuthModule} from "./auth/auth.module";
       })
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ChatGatewayGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
